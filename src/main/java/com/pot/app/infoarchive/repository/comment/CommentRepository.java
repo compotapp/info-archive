@@ -8,15 +8,17 @@ public interface CommentRepository {
 
     Comment save(Comment comment);
 
-    Comment getById(Long id);
+    Comment getById(String id);
 
     List<Comment> getAll();
 
-    List<Comment> getByArticleId(Long id);
+    List<Comment> getByArticleId(String id);
 
     Comment update(Comment comment);
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
-    void deleteByArticleId(Long id);
+    void deleteByArticleId(String id);
+
+    void deleteAll();
 }

@@ -1,15 +1,18 @@
 package com.pot.app.infoarchive.repository.extension;
 
+import com.pot.app.infoarchive.domain.article.Article;
+import com.pot.app.infoarchive.domain.comment.Comment;
+
+import java.util.UUID;
+
 public class GenerateId {
 
-    private static Long articleId = 1L;
-    private static Long commentId = 1L;
-
-    synchronized public static Long generateArticleId() {
-        return articleId++;
+    public static Article.ArticleId generateArticleId() {
+        return new Article.ArticleId(UUID.randomUUID());
     }
 
-    synchronized public static Long generateCommentId() {
-        return commentId++;
+    public static Comment.CommentId generateCommentId() {
+        final Comment comment = new Comment();
+        return new Comment.CommentId(UUID.randomUUID());
     }
 }

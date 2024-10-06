@@ -1,5 +1,8 @@
 package com.pot.app.infoarchive.domain.article.dto;
 
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +15,14 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleUpdate {
+public class ArticleUpdateRequest {
 
-    private Long id;
+    @NotNull
+    @NotBlank
+    private String articleId;
+    @NotNull
+    @NotBlank
     private String name;
-    private Set<String> tags = new HashSet<>();
+    @Nullable
+    private Set<String> tags;
 }

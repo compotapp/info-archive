@@ -1,21 +1,23 @@
 package com.pot.app.infoarchive.service.article;
 
-import com.pot.app.infoarchive.domain.article.dto.ArticleCreate;
-import com.pot.app.infoarchive.domain.article.dto.ArticleDto;
+import com.pot.app.infoarchive.domain.article.dto.ArticleCreateRequest;
+import com.pot.app.infoarchive.domain.article.dto.ArticleResponse;
 import com.pot.app.infoarchive.domain.IdDto;
-import com.pot.app.infoarchive.domain.article.dto.ArticleUpdate;
+import com.pot.app.infoarchive.domain.article.dto.ArticleUpdateRequest;
 
 import java.util.List;
 
 public interface ArticleService {
 
-    ArticleDto save(ArticleCreate request);
+    ArticleResponse save(ArticleCreateRequest request);
 
-    ArticleDto getById(IdDto request);
+    ArticleResponse getById(IdDto request);
 
-    List<ArticleDto> getAll();
+    List<ArticleResponse> getAll();
 
-    ArticleDto update(ArticleUpdate request);
+    ArticleResponse update(ArticleUpdateRequest request);
 
     void deleteById(IdDto request);
+
+    void deleteAll();
 }

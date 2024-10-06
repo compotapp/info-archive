@@ -1,46 +1,45 @@
 package com.pot.app.infoarchive.endpoint.article;
 
 import com.pot.app.infoarchive.domain.IdDto;
-import com.pot.app.infoarchive.domain.article.dto.ArticleCreate;
-import com.pot.app.infoarchive.domain.article.dto.ArticleDto;
-import com.pot.app.infoarchive.domain.article.dto.ArticleUpdate;
+import com.pot.app.infoarchive.domain.article.dto.ArticleCreateRequest;
+import com.pot.app.infoarchive.domain.article.dto.ArticleResponse;
+import com.pot.app.infoarchive.domain.article.dto.ArticleUpdateRequest;
 import com.pot.app.infoarchive.service.article.ArticleService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/article")
 public class ArticleController {
 
     private final ArticleService service;
 
-    public ArticleController(ArticleService service) {
-        this.service = service;
-    }
-
     @PostMapping("/create")
-    public ArticleDto create(@RequestBody ArticleCreate request) {
+    public ArticleResponse create(@Valid @RequestBody ArticleCreateRequest request) {
         return service.save(request);
     }
 
-    @GetMapping("/get")
-    public ArticleDto getArticle(@RequestBody IdDto request) {
+    @PostMapping("/get")
+    public ArticleResponse getArticle(@Valid @RequestBody IdDto request) {
         return service.getById(request);
     }
 
     @GetMapping("/get/all")
-    public List<ArticleDto> getArticle() {
+    public List<ArticleResponse> getArticle() {
         return service.getAll();
     }
 
     @PutMapping("/update")
-    public ArticleDto put(@RequestBody ArticleUpdate request) {
+    public ArticleResponse put(@Valid @RequestBody ArticleUpdateRequest request) {
         return service.update(request);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestBody IdDto request) {
+    @PostMapping("/delete")
+    public void delete(@Valid @RequestBody IdDto request) {
         service.deleteById(request);
     }
 }

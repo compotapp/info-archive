@@ -1,15 +1,11 @@
 package com.pot.app.infoarchive.endpoint.comment;
 
 import com.pot.app.infoarchive.domain.IdDto;
-import com.pot.app.infoarchive.domain.article.dto.ArticleCreate;
-import com.pot.app.infoarchive.domain.article.dto.ArticleDto;
-import com.pot.app.infoarchive.domain.article.dto.ArticleUpdate;
-import com.pot.app.infoarchive.domain.comment.dto.CommentCreate;
-import com.pot.app.infoarchive.domain.comment.dto.CommentDto;
-import com.pot.app.infoarchive.domain.comment.dto.CommentUpdate;
-import com.pot.app.infoarchive.repository.comment.dao.CommentDao;
-import com.pot.app.infoarchive.service.article.ArticleService;
+import com.pot.app.infoarchive.domain.comment.dto.CommentCreateRequest;
+import com.pot.app.infoarchive.domain.comment.dto.CommentResponse;
+import com.pot.app.infoarchive.domain.comment.dto.CommentUpdateRequest;
 import com.pot.app.infoarchive.service.comment.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,27 +21,27 @@ public class CommentController {
     }
 
     @PostMapping("/create")
-    public CommentDto create(@RequestBody CommentCreate request) {
+    public CommentResponse create(@Valid @RequestBody CommentCreateRequest request) {
         return service.save(request);
     }
 
-    @GetMapping("/get")
-    public CommentDto getArticle(@RequestBody IdDto request) {
+    @PostMapping("/get")
+    public CommentResponse getArticle(@Valid @RequestBody IdDto request) {
         return service.getById(request);
     }
 
     @GetMapping("/get/all")
-    public List<CommentDto> getArticle() {
+    public List<CommentResponse> getArticle() {
         return service.getAll();
     }
 
     @PutMapping("/update")
-    public CommentDto put(@RequestBody CommentUpdate request) {
+    public CommentResponse put(@Valid @RequestBody CommentUpdateRequest request) {
         return service.update(request);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestBody IdDto request) {
+    @PostMapping("/delete")
+    public void delete(@Valid @RequestBody IdDto request) {
         service.deleteById(request);
     }
 }

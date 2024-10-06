@@ -8,11 +8,13 @@ public interface ArticleRepository {
 
     Article save(Article article);
 
-    Article getById(Long id);
+    Article getById(String id);
 
     List<Article> getAll();
 
     Article update(Article article);
 
-    void deleteById(Long id);
+    void deleteById(String id);
+
+    void deleteAll();
 }

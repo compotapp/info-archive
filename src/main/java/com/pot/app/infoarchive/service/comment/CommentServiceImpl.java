@@ -1,9 +1,9 @@
 package com.pot.app.infoarchive.service.comment;
 
 import com.pot.app.infoarchive.domain.IdDto;
-import com.pot.app.infoarchive.domain.comment.dto.CommentCreate;
-import com.pot.app.infoarchive.domain.comment.dto.CommentDto;
-import com.pot.app.infoarchive.domain.comment.dto.CommentUpdate;
+import com.pot.app.infoarchive.domain.comment.dto.CommentCreateRequest;
+import com.pot.app.infoarchive.domain.comment.dto.CommentResponse;
+import com.pot.app.infoarchive.domain.comment.dto.CommentUpdateRequest;
 import com.pot.app.infoarchive.repository.comment.CommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,27 +22,32 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto save(CommentCreate request) {
+    public CommentResponse save(CommentCreateRequest request) {
         return toDto(repository.save(toEntity(request)));
     }
 
     @Override
-    public CommentDto getById(IdDto request) {
+    public CommentResponse getById(IdDto request) {
         return toDto(repository.getById(request.getId()));
     }
 
     @Override
-    public List<CommentDto> getAll() {
+    public List<CommentResponse> getAll() {
         return toDto(repository.getAll());
     }
 
     @Override
-    public CommentDto update(CommentUpdate request) {
+    public CommentResponse update(CommentUpdateRequest request) {
         return toDto(repository.update(toEntity(request)));
     }
 
     @Override
     public void deleteById(IdDto request) {
         repository.deleteById(request.getId());
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
     }
 }
