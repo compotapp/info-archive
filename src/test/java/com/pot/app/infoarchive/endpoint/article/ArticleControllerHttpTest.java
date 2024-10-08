@@ -6,8 +6,12 @@ import com.pot.app.infoarchive.domain.article.dto.ArticleCreateRequest;
 import com.pot.app.infoarchive.domain.article.dto.ArticleResponse;
 import com.pot.app.infoarchive.domain.article.dto.ArticleUpdateRequest;
 import com.pot.app.infoarchive.service.article.ArticleService;
+import com.pot.app.infoarchive.testUtil.TestBDFacade;
+import com.pot.app.infoarchive.testUtil.annotation.ClickHouse;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +19,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -29,11 +35,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@ClickHouse
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class ArticleControllerHttpTest {
 
     private static HttpClient client;
     private static ObjectMapper objectMapper;
+
+    @Autowired
+    private TestBDFacade bd;
 
     @LocalServerPort
     private int port;
@@ -47,21 +57,28 @@ public class ArticleControllerHttpTest {
         objectMapper = new ObjectMapper();
     }
 
+    @BeforeEach
+    public void setUpDb() {
+        bd.cleanDatabase();
+        bd.createMyTable();
+    }
+
     @AfterEach
     public void clearRepository() {
         articleService.deleteAll();
     }
 
     @Test
-    public void shouldArticleCreate() throws IOException, InterruptedException {
+    @SneakyThrows
+    public void shouldArticleCreate() {
         final var articleName = "Amigo";
         final var setTags = Set.of("Hello", "Amigo");
         final var request = new ArticleCreateRequest(articleName, setTags);
         final var httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(format("http://localhost:%s/article/create", port)))
+                .uri(URI.create(format("http://localhost:%s/article/create", port)))//вынести в константу
                 .headers("Content-Type", APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(request)))
-                .build();
+                .build();//вынести в отднльный метод
 
         final var response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
@@ -74,7 +91,8 @@ public class ArticleControllerHttpTest {
     }
 
     @Test
-    public void shouldArticleUpdate() throws IOException, InterruptedException {
+    @SneakyThrows
+    public void shouldArticleUpdate() {
         final var article = createArticle();
         final var updateArticleName = "Friend";
         final var updateSetTags = Set.of("Hello", "Friend");
@@ -100,7 +118,8 @@ public class ArticleControllerHttpTest {
     }
 
     @Test
-    public void shouldGetByArticleId() throws IOException, InterruptedException {
+    @SneakyThrows
+    public void shouldGetByArticleId() {
         final var article = createArticle();
         final var idDto = new IdDto(article.getArticleId());
         final var articleIdRequest = HttpRequest.newBuilder()
@@ -120,7 +139,8 @@ public class ArticleControllerHttpTest {
     }
 
     @Test
-    public void shouldGetAll() throws IOException, InterruptedException {
+    @SneakyThrows
+    public void shouldGetAll() {
         createArticle();
         createArticle();
         final var articleGetAllRequest = HttpRequest.newBuilder()
@@ -137,7 +157,8 @@ public class ArticleControllerHttpTest {
     }
 
     @Test
-    public void shouldArticleDelete() throws IOException, InterruptedException {
+    @SneakyThrows
+    public void shouldArticleDelete() {
         final var article = createArticle();
         final var idDto = new IdDto(article.getArticleId());
         final var articleIdRequest = HttpRequest.newBuilder()

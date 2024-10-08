@@ -1,0 +1,10 @@
+clickhouse:
+  jdbs-url: jdbc:clickhouse://localhost:8123/info
+  username: clickhoouse
+  password: 1234
+  native-jdbc-url: jdbc:clickhouse://localhost:9000/info
+  client-type: JDBC
+  driver-settings:
+    jdbc:
+      socket_timeout: 50_000
+      query_timeout: 50

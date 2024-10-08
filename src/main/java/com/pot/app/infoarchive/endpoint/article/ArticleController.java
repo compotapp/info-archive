@@ -18,7 +18,7 @@ public class ArticleController {
 
     private final ArticleService service;
 
-    @PostMapping("/create")
+    @PutMapping("/create")//почитать про идемпотентность
     public ArticleResponse create(@Valid @RequestBody ArticleCreateRequest request) {
         return service.save(request);
     }
